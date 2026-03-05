@@ -1,0 +1,15 @@
+# Backend
+devmeet-hub/backend/target/
+*.class
+
+# Frontend
+devmeet-hub/frontend/devmeet-ui/node_modules/
+devmeet-hub/frontend/devmeet-ui/.angular/
+
+# IDE
+.vscode/
+
+# Scripts temporários
+recreate_git.ps1
+mygitlog.txt
+gitlog*.txt
