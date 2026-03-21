@@ -1,0 +1,109 @@
+<div class="dashboard-container">
+  
+  <header class="hero-section">
+    <div class="hero-bg-glow"></div>
+    <div class="hero-content text-focus-in">
+      <div class="badge">✨ Plataforma Premium</div>
+      <h1>Gerencie e descubra os melhores<br><span class="gradient-text">Eventos de Tecnologia</span></h1>
+      <p>Crie meetups, amplie sua rede de contatos e impulsione sua carreira na área tech. Tudo em um só lugar digital e moderno.</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- Formulário de Criação -->
+    <section class="creation-section slide-up-animation">
+      <div class="card glass-card">
+        <div class="card-header-form">
+          <div class="icon-wrap">🚀</div>
+          <div>
+            <h2>Criar Novo Evento</h2>
+            <p class="subtitle">Insira o CEP que buscaremos o endereço automaticamente.</p>
+          </div>
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" class="event-form">
+          <div class="form-group">
+            <label>Título do Evento <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <input type="text" [(ngModel)]="newEvent.title" name="title" placeholder="Ex: Angular SP Meetup" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Data e Hora <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input type="datetime-local" [(ngModel)]="newEvent.eventDate" name="eventDate" required>
+              </div>
+            </div>
+            <div class="form-group half">
+              <label>CEP do Local <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input type="text" [(ngModel)]="newEvent.cep" name="cep" placeholder="00000-000" maxlength="9" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Descrição</label>
+            <div class="input-wrapper">
+              <textarea [(ngModel)]="newEvent.description" name="description" placeholder="Sobre o que será o seu evento tech?"></textarea>
+            </div>
+          </div>
+
+          <div *ngIf="errorMessage" class="error-msg shake-animation">
+            <span>⚠️</span> {{ errorMessage }}
+          </div>
+
+          <button type="submit" class="btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Registrar Evento</span>
+            <span *ngIf="isLoading" class="spinner">⏳ Processando...</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Listagem de Eventos -->
+    <section class="events-list-section slide-up-animation" style="animation-delay: 0.1s;">
+      <div class="section-title-wrapper">
+        <h2>Próximos Eventos</h2>
+        <span class="event-count">{{ events.length }} Encontrados</span>
+      </div>
+      
+      <div class="events-grid" *ngIf="events.length > 0; else noEvents">
+        <div class="event-card" *ngFor="let event of events">
+          <div class="card-glow"></div>
+          <div class="card-inner">
+            <div class="card-header">
+              <div class="date-badge">
+                <span class="day">{{ event.eventDate | date:'dd' }}</span>
+                <span class="month">{{ event.eventDate | date:'MMM' | uppercase }}</span>
+              </div>
+              <button class="btn-delete" (click)="deleteEvent(event.id)" title="Remover">🗑️</button>
+            </div>
+            <div class="card-body">
+              <h3>{{ event.title }}</h3>
+              <p class="time">🕒 {{ event.eventDate | date:'HH:mm' }}</p>
+              <p class="description">{{ event.description }}</p>
+              
+              <div class="address-box">
+                <div class="location-icon">📍</div>
+                <div class="address-text">{{ event.fullAddress }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noEvents>
+        <div class="empty-state">
+           <div class="empty-icon">📂</div>
+          <p>Nenhum evento tech encontrado.<br><strong>Seja o primeiro a criar um na nossa lista!</strong></p>
+        </div>
+      </ng-template>
+
+    </section>
+
+  </main>
+</div>
