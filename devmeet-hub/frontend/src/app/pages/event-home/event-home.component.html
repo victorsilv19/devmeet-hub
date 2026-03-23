@@ -1,0 +1,78 @@
+<div class="dashboard-container">
+  
+  <header class="hero-section">
+    <div class="hero-content">
+      <h1>🚀 DevMeet <span>Hub</span></h1>
+      <p>Gerencie, descubra e organize os melhores eventos de tecnologia em um só lugar.</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- Formulário de Criação -->
+    <section class="creation-section">
+      <div class="card glass-card">
+        <h2>Criar Novo Evento</h2>
+        <p class="subtitle">Insira o CEP para buscar o endereço automaticamente.</p>
+        
+        <form (ngSubmit)="onSubmit()" class="event-form">
+          <div class="form-group">
+            <label>Título do Evento *</label>
+            <input type="text" [(ngModel)]="newEvent.title" name="title" placeholder="Ex: Angular SP Meetup" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Data e Hora *</label>
+              <input type="datetime-local" [(ngModel)]="newEvent.eventDate" name="eventDate" required>
+            </div>
+            <div class="form-group half">
+              <label>CEP do Local *</label>
+              <input type="text" [(ngModel)]="newEvent.cep" name="cep" placeholder="00000-000" maxlength="9" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Descrição</label>
+            <textarea [(ngModel)]="newEvent.description" name="description" placeholder="Sobre o que será o evento?"></textarea>
+          </div>
+
+          <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
+          <button type="submit" class="btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Registrar Evento</span>
+            <span *ngIf="isLoading" class="spinner">⏳ Carregando localização...</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Listagem de Eventos -->
+    <section class="events-list-section">
+      <h2>Próximos Eventos Cadastrados</h2>
+      
+      <div class="events-grid" *ngIf="events.length > 0; else noEvents">
+        <div class="event-card" *ngFor="let event of events">
+          <div class="card-header">
+            <h3>{{ event.title }}</h3>
+            <button class="btn-delete" (click)="deleteEvent(event.id)" title="Remover">✕</button>
+          </div>
+          <div class="card-body">
+            <p class="date">📅 {{ event.eventDate | date:'dd/MM/yyyy às HH:mm' }}</p>
+            <p class="description">{{ event.description }}</p>
+            <hr>
+            <p class="address">📍 {{ event.fullAddress }}</p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noEvents>
+        <div class="empty-state">
+          <p>Nenhum evento tech encontrado. Seja o primeiro a criar!</p>
+        </div>
+      </ng-template>
+
+    </section>
+
+  </main>
+</div>
